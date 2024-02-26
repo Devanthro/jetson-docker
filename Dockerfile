@@ -13,13 +13,6 @@ RUN apt-get update && apt-get install vim -y
 
 RUN apt-get install gridsite-clients n2n iputils-ping openvpn -y
 
-# RUN echo "export CYCLONEDDS_URI=file:///root/workspace/cyclonedds.xml" >> ~/.bashrc
-# RUN echo "source /root/workspace/install/setup.bash" >> ~/.bashrc
-# RUN echo "alias tcp-connector='ros2 run ros_tcp_endpoint default_server_endpoint --ros-args -p ROS_IP:=0.0.0.0'" >> ~/.bashrc
-# RUN echo "alias zt-vpn='service zerotier-one start && zerotier-cli join db64858fed131582'" >> ~/.bashrc
-# RUN echo "alias ovpn='openvpn /root/workspace/src/ovpn/client.conf" >> ~/.bashrc
-# RUN echo "alias chatter='ros2 topic pub /chatter std_msgs/String \"data: Hello ROS Developers\"'" >> ~/.bashrc
-
 # fix cmake version to compile custom ROS2 messages
 # https://github.com/dusty-nv/jetson-containers/commit/d5e9d3aab9341ba4b66d01663256956a5b50d9bc
 RUN /usr/bin/python3 -m pip install --upgrade pip
@@ -117,4 +110,32 @@ RUN bash -c "source ${ROS1_INSTALL_PATH}/setup.bash && source ${ROS2_INSTALL_PAT
 
 #RUN echo "source /opt/ros1_bridge/install/setup.bash" >> ~/.bashrc
 
+# RUN echo "export CYCLONEDDS_URI=file:///root/workspace/cyclonedds.xml" >> ~/.bashrc
+RUN echo "source /root/workspace/install/setup.bash" >> ~/.bashrc
+RUN echo "export ROS_MASTER_URI=http://192.168.1.105:11311" >> ~/.bashrc
+
+RUN echo "alias tcp-connector='while true; do ros2 run ros_tcp_endpoint default_server_endpoint --ros-args -p ROS_IP:=0.0.0.0; done'" >> ~/.bashrc
+# RUN echo "alias zt-vpn='service zerotier-one start && zerotier-cli join db64858fed131582'" >> ~/.bashrc
+# RUN echo "alias ovpn='openvpn /root/workspace/src/ovpn/client.conf" >> ~/.bashrc
+# RUN echo "alias chatter='ros2 topic pub /chatter std_msgs/String \"data: Hello ROS Developers\"'" >> ~/.bashrc
+RUN echo "alias audio-capture-ros2='ros2 launch audio_capture capture.launch.py device:=plughw:2,0 format:=wave channels:=2 sample_rate:=48000'" >> ~/.bashrc
+RUN echo "alias audio-play-ros2='ros2 launch audio_play play.launch.py do_timestamp:=false device:=hw:2,0 format:=wave sample_rate:=48000 channels:=1 ns:=/operator'" >> ~/.bashrc
+RUN echo "alias ros1bridge='export ROS_IP=192.168.1.104 && source /opt/ros/melodic/setup.bash &&  source /opt/ros1_bridge/install/setup.bash && rosparam load /root/workspace/src/bridge.yaml && ros2 run ros1_bridge parameter_bridge'" >> ~/.bashrc
+RUN echo "alias dual-cam='ros2 run csi_camera dual_camera'" >> ~/.bashrc
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    tmux
+
+RUN git clone --recursive https://github.com/tony/tmux-config.git ~/.tmux
+RUN ln -s ~/.tmux/.tmux.conf ~/.tmux.conf
+RUN echo "bind-key q display-panes" >> ~/.tmux.conf
+
+RUN ln -s /root/workspace/src/autostart.sh ~/autostart.sh
+# RUN echo "./root/autostart.sh" >> /ros_entrypoint.sh
+# CMD ["bash", "echo hello && /root/autostart.sh"]
+
+
+RUN echo "alias tcp-connector2='while true; do ros2 run ros_tcp_endpoint default_server_endpoint --ros-args -p ROS_IP:=0.0.0.0 -p ROS_TCP_PORT:=20000; done'" >> ~/.bashrc
 WORKDIR /root
+
