@@ -137,5 +137,8 @@ RUN ln -s /root/workspace/src/autostart.sh ~/autostart.sh
 
 
 RUN echo "alias tcp-connector2='while true; do ros2 run ros_tcp_endpoint default_server_endpoint --ros-args -p ROS_IP:=0.0.0.0 -p ROS_TCP_PORT:=20000; done'" >> ~/.bashrc
+
+RUN /usr/bin/python3 -m pip install pytz
+
 WORKDIR /root
 
