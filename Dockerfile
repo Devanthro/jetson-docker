@@ -111,8 +111,8 @@ RUN bash -c "source ${ROS1_INSTALL_PATH}/setup.bash && source ${ROS2_INSTALL_PAT
 #RUN echo "source /opt/ros1_bridge/install/setup.bash" >> ~/.bashrc
 
 # RUN echo "export CYCLONEDDS_URI=file:///root/workspace/cyclonedds.xml" >> ~/.bashrc
-RUN echo "source /root/workspace/install/setup.bash" >> ~/.bashrc
-RUN echo "export ROS_MASTER_URI=http://192.168.1.105:11311" >> ~/.bashrc
+# RUN echo "source /root/workspace/install/setup.bash" >> ~/.bashrc
+RUN echo "export ROS_MASTER_URI=http://192.168.1.104:11311" >> ~/.bashrc
 
 RUN echo "alias tcp-connector='while true; do ros2 run ros_tcp_endpoint default_server_endpoint --ros-args -p ROS_IP:=0.0.0.0; done'" >> ~/.bashrc
 # RUN echo "alias zt-vpn='service zerotier-one start && zerotier-cli join db64858fed131582'" >> ~/.bashrc
@@ -120,7 +120,7 @@ RUN echo "alias tcp-connector='while true; do ros2 run ros_tcp_endpoint default_
 # RUN echo "alias chatter='ros2 topic pub /chatter std_msgs/String \"data: Hello ROS Developers\"'" >> ~/.bashrc
 RUN echo "alias audio-capture-ros2='ros2 launch audio_capture capture.launch.py device:=plughw:2,0 format:=wave channels:=2 sample_rate:=48000'" >> ~/.bashrc
 RUN echo "alias audio-play-ros2='ros2 launch audio_play play.launch.py do_timestamp:=false device:=hw:2,0 format:=wave sample_rate:=48000 channels:=1 ns:=/operator'" >> ~/.bashrc
-RUN echo "alias ros1bridge='export ROS_IP=192.168.1.104 && source /opt/ros/melodic/setup.bash &&  source /opt/ros1_bridge/install/setup.bash && rosparam load /root/workspace/src/bridge.yaml && ros2 run ros1_bridge parameter_bridge'" >> ~/.bashrc
+RUN echo "alias ros1bridge='export ROS_IP=192.168.1.104 && source /opt/ros/melodic/setup.bash &&  source /opt/ros1_bridge/install/setup.bash && rosparam load /root/bridge.yaml && ros2 run ros1_bridge parameter_bridge'" >> ~/.bashrc
 RUN echo "alias dual-cam='ros2 run csi_camera dual_camera'" >> ~/.bashrc
 
 RUN apt-get update && \
@@ -131,7 +131,7 @@ RUN git clone --recursive https://github.com/tony/tmux-config.git ~/.tmux
 RUN ln -s ~/.tmux/.tmux.conf ~/.tmux.conf
 RUN echo "bind-key q display-panes" >> ~/.tmux.conf
 
-RUN ln -s /root/workspace/src/autostart.sh ~/autostart.sh
+# RUN ln -s /root/workspace/src/autostart.sh ~/autostart.sh
 # RUN echo "./root/autostart.sh" >> /ros_entrypoint.sh
 # CMD ["bash", "echo hello && /root/autostart.sh"]
 
@@ -139,6 +139,11 @@ RUN ln -s /root/workspace/src/autostart.sh ~/autostart.sh
 RUN echo "alias tcp-connector2='while true; do ros2 run ros_tcp_endpoint default_server_endpoint --ros-args -p ROS_IP:=0.0.0.0 -p ROS_TCP_PORT:=20000; done'" >> ~/.bashrc
 
 RUN /usr/bin/python3 -m pip install pytz
+
+COPY ./bridge.yaml /root
+COPY ./cyclonedds.xml /root
+
+RUN sed -e '/[ -z "$PS1" ] && return/s/^/#/g' -i /root/.bashrc
 
 WORKDIR /root
 

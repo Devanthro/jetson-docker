@@ -1,0 +1,41 @@
+topics:
+  -
+    topic: /operator/alice/joint_state
+    type: sensor_msgs/msg/JointState
+    queue_size: 1
+  -
+    topic: /image/back/image_compressed
+    type: sensor_msgs/msg/CompressedImage
+    queue_size: 1
+  -
+    topic: /shoulders/temperature
+    type: sensor_msgs/msg/Temperature
+    queue_size: 1
+  -
+    topic: /shoulders/joint_states
+    type: sensor_msgs/msg/JointState
+    queue_size: 1
+  - 
+    topic: /shoulders/torque_on
+    type: std_msgs/msg/Bool
+    queue_size: 1
+  -
+    topic: /operator/alice/headset_orientation
+    type: geometry_msgs/msg/PoseStamped
+    queue_size: 1
+  -
+    topic: /alice/volume
+    type: std_msgs/msg/Float32
+    queue_size: 1
+  -
+    topic: /alice/heartbeat
+    type: diagnostic_msgs/msg/DiagnosticStatus
+    queue_size: 1
+
+# services_2_to_1:
+#   -
+#     service: /arm_left/pause_motion  # ROS 1 service name
+#     type: std_srvs/SetBool  # The ROS 1 service type name
+#   -
+#     service: /arm_right/pause_motion  # ROS 1 service name
+#     type: std_srvs/SetBool
