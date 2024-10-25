@@ -28,14 +28,63 @@ topics:
     type: std_msgs/msg/Float32
     queue_size: 1
   -
+    topic: /alice/doorbell
+    type: std_msgs/msg/Bool
+    queue_size: 1
+  -
     topic: /alice/heartbeat
     type: diagnostic_msgs/msg/DiagnosticStatus
+    queue_size: 1
+  -
+    topic: /alice/reboot/shoulders/request
+    type: std_msgs/msg/Empty
+    queue_size: 1
+  -
+    topic: /alice/reboot/head/request
+    type: std_msgs/msg/Empty
+    queue_size: 1
+  -
+    topic: /alice/reboot/wheels/request
+    type: std_msgs/msg/Empty
+    queue_size: 1
+  -
+    topic: /alice/reboot/audio/request
+    type: std_msgs/msg/Empty
+    queue_size: 1
+  -
+    topic: /alice/reboot/lefteye/request
+    type: std_msgs/msg/Empty
+    queue_size: 1
+  -
+    topic: /alice/reboot/righteye/request
+    type: std_msgs/msg/Empty
+    queue_size: 1
+  -
+    topic: /alice/reboot/shoulders/reply
+    type: std_msgs/msg/Bool
+    queue_size: 1
+  -
+    topic: /alice/reboot/head/reply
+    type: std_msgs/msg/Bool
+    queue_size: 1
+  -
+    topic: /alice/reboot/wheels/reply
+    type: std_msgs/msg/Bool
+    queue_size: 1
+  -
+    topic: /alice/reboot/audio/reply
+    type: std_msgs/msg/Bool
+    queue_size: 1
+  -
+    topic: /alice/reboot/lefteye/reply
+    type: std_msgs/msg/Bool
+    queue_size: 1
+  -
+    topic: /alice/reboot/righteye/reply
+    type: std_msgs/msg/Bool
     queue_size: 1
 
 # services_2_to_1:
 #   -
-#     service: /arm_left/pause_motion  # ROS 1 service name
-#     type: std_srvs/SetBool  # The ROS 1 service type name
-#   -
-#     service: /arm_right/pause_motion  # ROS 1 service name
-#     type: std_srvs/SetBool
+#     service: /alice/reboot  # ROS 1 service name
+#     type: std_srvs/Trigger #diagnostic_msgs/AddDiagnostics  # The ROS 1 service type name
